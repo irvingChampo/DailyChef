@@ -53,6 +53,8 @@ dependencies {
     implementation(libs.com.squareup.retrofit2.converter.json)
     implementation(libs.io.coil.kt.coil.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.datastore.preferences)
     implementation("androidx.compose.runtime:runtime:1.7.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

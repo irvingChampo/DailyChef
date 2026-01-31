@@ -1,10 +1,12 @@
-package com.example.dailychef.features.DailyChef.presentation.viewmodels // Paquete actualizado
+package com.example.dailychef.features.DailyChef.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dailychef.features.DailyChef.domain.usecases.GetRecipeDetailsUseCase
 import com.example.dailychef.features.DailyChef.domain.usecases.GetRecipesByCategoryUseCase
-import com.example.dailychef.features.DailyChef.presentation.screens.DailyChefUiState // Import actualizado
+import com.example.dailychef.features.DailyChef.domain.usecase.GetFavoriteIdsUseCase
+import com.example.dailychef.features.DailyChef.domain.usecase.ToggleFavoriteUseCase
+import com.example.dailychef.features.DailyChef.presentation.screens.DailyChefUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -12,14 +14,26 @@ import kotlinx.coroutines.launch
 
 class DailyChefViewModel(
     private val getRecipesUseCase: GetRecipesByCategoryUseCase,
-    private val getDetailsUseCase: GetRecipeDetailsUseCase
+    private val getDetailsUseCase: GetRecipeDetailsUseCase,
+    private val getFavoriteIdsUseCase: GetFavoriteIdsUseCase,
+    private val toggleFavoriteUseCase: ToggleFavoriteUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(DailyChefUiState())
     val uiState = _uiState.asStateFlow()
 
     init {
+        // Observamos los favoritos del DataStore permanentemente
+        observeFavorites()
         loadRecipes(_uiState.value.currentCategory)
+    }
+
+    private fun observeFavorites() {
+        viewModelScope.launch {
+            getFavoriteIdsUseCase().collect { ids ->
+                _uiState.update { it.copy(favoriteIds = ids) }
+            }
+        }
     }
 
     fun loadRecipes(category: String) {
@@ -35,7 +49,20 @@ class DailyChefViewModel(
         }
     }
 
-    fun selectRecipe(recipeId: String) {
+    // Acción para el botón de corazón
+    fun onToggleFavorite(recipeId: String) {
+        viewModelScope.launch {
+            toggleFavoriteUseCase(recipeId)
+        }
+    }
+
+    // Acción para el Chip de filtro
+    fun toggleFilterFavorites() {
+        _uiState.update { it.copy(showFavoritesOnly = !it.showFavoritesOnly) }
+    }
+
+    // Para la navegación futura
+    fun getRecipeById(recipeId: String) {
         _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             val result = getDetailsUseCase(recipeId)

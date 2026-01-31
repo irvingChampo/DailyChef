@@ -3,12 +3,14 @@ package com.example.dailychef.features.DailyChef.di
 import com.example.dailychef.core.di.AppContainer
 import com.example.dailychef.features.DailyChef.domain.usecases.GetRecipeDetailsUseCase
 import com.example.dailychef.features.DailyChef.domain.usecases.GetRecipesByCategoryUseCase
+import com.example.dailychef.features.DailyChef.domain.usecase.GetFavoriteIdsUseCase // Import nuevo
+import com.example.dailychef.features.DailyChef.domain.usecase.ToggleFavoriteUseCase   // Import nuevo
 import com.example.dailychef.features.DailyChef.presentation.viewmodels.DailyChefViewModelFactory
 
 class DailyChefModule(
     private val appContainer: AppContainer
 ) {
-    // Proveemos los casos de uso (internos)
+    // --- Proveemos los casos de uso existentes ---
     private fun provideGetRecipesUseCase(): GetRecipesByCategoryUseCase {
         return GetRecipesByCategoryUseCase(appContainer.dailyChefRepository)
     }
@@ -17,11 +19,22 @@ class DailyChefModule(
         return GetRecipeDetailsUseCase(appContainer.dailyChefRepository)
     }
 
-    // Proveemos el Factory para el ViewModel (público)
+    // --- Proveemos los NUEVOS casos de uso de favoritos ---
+    private fun provideGetFavoriteIdsUseCase(): GetFavoriteIdsUseCase {
+        return GetFavoriteIdsUseCase(appContainer.favoritesRepository)
+    }
+
+    private fun provideToggleFavoriteUseCase(): ToggleFavoriteUseCase {
+        return ToggleFavoriteUseCase(appContainer.favoritesRepository)
+    }
+
+    // --- Actualizamos el Factory para que reciba TODO ---
     fun provideDailyChefViewModelFactory(): DailyChefViewModelFactory {
         return DailyChefViewModelFactory(
             getRecipesUseCase = provideGetRecipesUseCase(),
-            getDetailsUseCase = provideGetDetailsUseCase()
+            getDetailsUseCase = provideGetDetailsUseCase(),
+            getFavoriteIdsUseCase = provideGetFavoriteIdsUseCase(), // Nuevo
+            toggleFavoriteUseCase = provideToggleFavoriteUseCase()  // Nuevo
         )
     }
 }
