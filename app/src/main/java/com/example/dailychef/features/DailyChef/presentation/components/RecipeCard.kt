@@ -20,8 +20,8 @@ import coil.compose.AsyncImage
 fun RecipeCard(
     name: String,
     imageUrl: String,
-    isFavorite: Boolean,         // Nuevo
-    onFavoriteClick: () -> Unit, // Nuevo
+    isFavorite: Boolean,
+    onFavoriteClick: () -> Unit,
     onClick: () -> Unit
 ) {
     Card(
@@ -38,7 +38,6 @@ fun RecipeCard(
                     modifier = Modifier.fillMaxWidth().height(150.dp),
                     contentScale = ContentScale.Crop
                 )
-                // Botón de Favorito sobre la imagen
                 IconButton(
                     onClick = onFavoriteClick,
                     modifier = Modifier.align(Alignment.TopEnd)

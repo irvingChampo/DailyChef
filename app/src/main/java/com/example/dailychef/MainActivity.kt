@@ -24,7 +24,6 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AppTheme {
-                // Ali Lopez style: El NavController gestiona todo el flujo
                 val navController = rememberNavController()
                 DailyChefNavGraph(
                     navController = navController,

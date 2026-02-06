@@ -34,7 +34,6 @@ fun RecipeListScreen(
         }
     ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
-            // SELECTORES (Categoría + Filtro Favoritos)
             Row(
                 modifier = Modifier.fillMaxWidth().padding(8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -52,7 +51,6 @@ fun RecipeListScreen(
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                // BOTÓN DE FILTRAR FAVORITOS (Valor agregado)
                 FilterChip(
                     selected = uiState.showFavoritesOnly,
                     onClick = { viewModel.toggleFilterFavorites() },

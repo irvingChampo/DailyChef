@@ -13,7 +13,6 @@ class FavoritesRepositoryImpl(
 ) : FavoritesRepository {
 
     private companion object {
-        // Clave única para guardar el conjunto de IDs
         val FAVORITES_KEY = stringSetPreferencesKey("favorite_recipes")
     }
 
@@ -24,14 +23,13 @@ class FavoritesRepositoryImpl(
     }
 
     override suspend fun toggleFavorite(recipeId: String) {
-        // Editamos el DataStore de forma asíncrona
         dataStore.edit { preferences ->
             val currentFavorites = preferences[FAVORITES_KEY]?.toMutableSet() ?: mutableSetOf()
 
             if (currentFavorites.contains(recipeId)) {
-                currentFavorites.remove(recipeId) // Ya era favorito, lo quitamos
+                currentFavorites.remove(recipeId)
             } else {
-                currentFavorites.add(recipeId)    // No era favorito, lo agregamos
+                currentFavorites.add(recipeId)
             }
 
             preferences[FAVORITES_KEY] = currentFavorites

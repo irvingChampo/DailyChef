@@ -11,7 +11,6 @@ class DailyChefRepositoryImpl(
 
     override suspend fun getRecipesByCategory(category: String): List<Recipe> {
         val response = api.getRecipesByCategory(category)
-        // Convertimos cada DTO a nuestro modelo de Dominio
         return response.meals?.map { it.toDomain() } ?: emptyList()
     }
 

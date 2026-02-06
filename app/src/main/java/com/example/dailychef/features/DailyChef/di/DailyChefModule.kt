@@ -19,7 +19,6 @@ class DailyChefModule(
         return GetRecipeDetailsUseCase(appContainer.dailyChefRepository)
     }
 
-    // --- Proveemos los NUEVOS casos de uso de favoritos ---
     private fun provideGetFavoriteIdsUseCase(): GetFavoriteIdsUseCase {
         return GetFavoriteIdsUseCase(appContainer.favoritesRepository)
     }
@@ -28,7 +27,6 @@ class DailyChefModule(
         return ToggleFavoriteUseCase(appContainer.favoritesRepository)
     }
 
-    // --- Actualizamos el Factory para que reciba TODO ---
     fun provideDailyChefViewModelFactory(): DailyChefViewModelFactory {
         return DailyChefViewModelFactory(
             getRecipesUseCase = provideGetRecipesUseCase(),

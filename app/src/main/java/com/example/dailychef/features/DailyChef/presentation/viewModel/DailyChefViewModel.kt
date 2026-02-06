@@ -23,7 +23,6 @@ class DailyChefViewModel(
     val uiState = _uiState.asStateFlow()
 
     init {
-        // Observamos los favoritos del DataStore permanentemente
         observeFavorites()
         loadRecipes(_uiState.value.currentCategory)
     }
@@ -49,19 +48,16 @@ class DailyChefViewModel(
         }
     }
 
-    // Acción para el botón de corazón
     fun onToggleFavorite(recipeId: String) {
         viewModelScope.launch {
             toggleFavoriteUseCase(recipeId)
         }
     }
 
-    // Acción para el Chip de filtro
     fun toggleFilterFavorites() {
         _uiState.update { it.copy(showFavoritesOnly = !it.showFavoritesOnly) }
     }
 
-    // Para la navegación futura
     fun getRecipeById(recipeId: String) {
         _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {

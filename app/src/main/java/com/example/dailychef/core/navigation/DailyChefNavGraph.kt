@@ -20,7 +20,6 @@ fun DailyChefNavGraph(
         navController = navController,
         startDestination = Screen.RecipeList.route
     ) {
-        // Pantalla de Lista
         composable(route = Screen.RecipeList.route) {
             RecipeListScreen(
                 viewModel = viewModel(factory = factory),
@@ -30,7 +29,6 @@ fun DailyChefNavGraph(
             )
         }
 
-        // Pantalla de Detalle (con argumento)
         composable(
             route = Screen.RecipeDetail.route,
             arguments = listOf(navArgument("recipeId") { type = NavType.StringType })
